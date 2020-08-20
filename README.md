@@ -7,9 +7,9 @@
 ## Description
 Application collecting data from `https://vpic.nhtsa.dot.gov/api/` and presenting results for chosen **car make** and **model name**. 
 Every new response from that site(if the car exists) is being saved within database (cars make and model name). 
-The car can be `rated` from **1** to **5**. 
+The car can be **rated** from **1** to **5**. 
 User can check out the **list of all cars**, with their current average rate, requested so far.
-User can also see **5 Top Cars** which have the biggest *number of rates* (not the average rate).
+User can also see **Top Cars**, so a list starting with the biggest *number of rates* (not the average rate).
 
 
 ## Installation & Requirements
@@ -20,6 +20,7 @@ Written on Windows 10
 
 
 ## Usage
+
 -----------------------------------------------
 
 ### Finding/Adding a new Car
@@ -42,6 +43,7 @@ Client must provide the *make* of the car and *model name* of the car.
 - `405` - method not allowed
 
 *If that (proper)car model is already present in database, saving it will be omitted.*
+
 -----------------------------------------------
 
 ### Rating a car
@@ -64,22 +66,42 @@ Client must provide the *make* of the car, *model name* of the car and rate from
 - `405` - method not allowed
 
 *...Of course if it comes to rating Tesla the only legitimate rate is 5 ;))*
+
 -----------------------------------------------
 
 ### List of all registered Cars
 
 *Endpoint:*
-https://*****
+https://localhost:8000/cars/all/
 
 - request method `GET`
-...
+List is ordered by the `make` of the car. Shows *make*, *model* and *average rate* of each car.
 
-*Possible answers*: 
-
+*Possible answer*:
+```
+[
+    {
+        "make": "honda",
+        "model_name": "civic",
+        "average_rate": 0.0
+    },
+    {
+        "make": "tesla",
+        "model_name": "model s",
+        "average_rate": 4.7
+    },
+    {
+        "make": "tesla",
+        "model_name": "model 3",
+        "average_rate": 5.0
+    },
+    ...
+]
+```
 
 -----------------------------------------------
 
-### Top 5 most rated Cars
+### Most popular Cars
 
 *Endpoint:*
 https://*****

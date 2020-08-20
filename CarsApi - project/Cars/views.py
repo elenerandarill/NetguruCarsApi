@@ -1,15 +1,14 @@
-import json
-from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 import requests
-from Cars.serializers import FindCarSerializer, AddCarSerializer, AddRateSerializer
+from Cars.serializers import FindCarSerializer, AddCarSerializer, AddRateSerializer, CarSerializer
 from Cars.models import Car
 
 
 def is_model_valid(results: dict, model: str):
-    # If this model is present inside of a (r)esponse message.
+    # Chcecks is model is present inside of a (r)esponse message.
     for r in results:
         if model == r['Model_Name'].lower():
             return True
@@ -17,7 +16,7 @@ def is_model_valid(results: dict, model: str):
 
 
 def save_if_new(request, model, make):
-    # Save car to db if it is not there yet.
+    # Saves car to db if it is not there yet.
     try:
         car = Car.objects.get(model_name=model, make=make)
         if car:
@@ -31,13 +30,17 @@ def save_if_new(request, model, make):
 
 @api_view(['POST'])
 def find_car(request):
+    """ Client can find a car giving it's make and model in request.
+    Then car is checked with 'https://vpic.nhtsa.dot.gov' website,
+    and if exists, is saved into our database. """
+
     if request.method == 'POST':
         serializer = FindCarSerializer(data=request.data)
         if serializer.is_valid():
             # Make and model of a car client want`s to get info about.
             make = serializer.validated_data['make']
             model_name = serializer.validated_data['model_name']
-
+            # Sending a request.
             url = "https://vpic.nhtsa.dot.gov/api//vehicles/GetModelsForMake/"
             params = {'format': 'json'}
             resp = requests.get(url + make, params=params)
@@ -57,6 +60,8 @@ def find_car(request):
 
 @api_view(['POST'])
 def rate_car(request):
+    """ Client can rate cars, existing in database, from 1 to 5. """
+
     if request.method == 'POST':
         serializer = AddRateSerializer(data=request.data)
         if serializer.is_valid():
@@ -75,11 +80,12 @@ def rate_car(request):
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-# @api_view(['GET'])
-# def all_cars(request):
-#     pass
+class ListCars(APIView):
+    """ List all cars saved in database [make, model, average rate]. """
+
+    def get(self, request):
+        cars = Car.objects.all().order_by('make')
+        serializer = CarSerializer(cars, many=True)
+        return Response(serializer.data)
 
 
-# @api_view(['GET'])
-# def most_popular(request):
-#     pass

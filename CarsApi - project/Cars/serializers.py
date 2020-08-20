@@ -13,6 +13,12 @@ class AddCarSerializer(serializers.ModelSerializer):
         fields = ['make', 'model_name', 'rates_counter', 'total_rates', 'average_rate']
 
 
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['make', 'model_name', 'average_rate']
+
+
 class AddRateSerializer(serializers.Serializer):
     make = serializers.CharField()
     model_name = serializers.CharField()
