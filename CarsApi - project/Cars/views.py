@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 import requests
-from Cars.serializers import FindCarSerializer, AddCarSerializer, AddRateSerializer, CarSerializer
+from Cars.serializers import FindCarSerializer, AddCarSerializer, AddRateSerializer, CarSerializer, CarPopularSerializer
 from Cars.models import Car
 
 
@@ -89,3 +89,11 @@ class ListCars(APIView):
         return Response(serializer.data)
 
 
+class ListPopularCars(APIView):
+    """ List all cars saved in database, but from most to less poluar.
+     Polular - meaning - have the biggest amount of rates. """
+
+    def get(self, request):
+        cars = Car.objects.all().order_by('-rates_counter')
+        serializer = CarPopularSerializer(cars, many=True)
+        return Response(serializer.data)

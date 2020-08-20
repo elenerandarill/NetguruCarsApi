@@ -9,7 +9,7 @@ Application collecting data from `https://vpic.nhtsa.dot.gov/api/` and presentin
 Every new response from that site(if the car exists) is being saved within database (cars make and model name). 
 The car can be **rated** from **1** to **5**. 
 User can check out the **list of all cars**, with their current average rate, requested so far.
-User can also see **Top Cars**, so a list starting with the biggest *number of rates* (not the average rate).
+User can also see **popular cars**, so a list starting with the biggest *number of rates* (not the average rate) given to the car.
 
 
 ## Installation & Requirements
@@ -23,7 +23,7 @@ Written on Windows 10
 
 -----------------------------------------------
 
-### Finding/Adding a new Car
+### Finding/Adding a new car
 
 *Endpoint:*
 https://localhost:8000/cars/find/
@@ -69,7 +69,7 @@ Client must provide the *make* of the car, *model name* of the car and rate from
 
 -----------------------------------------------
 
-### List of all registered Cars
+### List of all registered cars
 
 *Endpoint:*
 https://localhost:8000/cars/all/
@@ -79,6 +79,7 @@ List is ordered by the `make` of the car. Shows *make*, *model* and *average rat
 
 *Possible answer*:
 ```
+HTTP `200` OK
 [
     {
         "make": "honda",
@@ -101,17 +102,40 @@ List is ordered by the `make` of the car. Shows *make*, *model* and *average rat
 
 -----------------------------------------------
 
-### Most popular Cars
+### Most popular cars
 
 *Endpoint:*
-https://*****
+https://localhost:8000/cars/popular/
 
 - request method `GET`
-...
+List is ordered by the number of rates (`rates_counter`), from most to least popular.
+
 
 *Possible answers*: 
-
-
+```
+HTTP `200` OK
+[
+    {
+        "make": "tesla",
+        "model_name": "model s",
+        "rates_counter": 3,
+        "average_rate": 4.7
+    },
+    {
+        "make": "tesla",
+        "model_name": "model y",
+        "rates_counter": 2,
+        "average_rate": 4.5
+    },
+    {
+        "make": "tesla",
+        "model_name": "model 3",
+        "rates_counter": 1,
+        "average_rate": 5.0
+    },
+	...
+]
+```
 
 -----------------------------------------------
 

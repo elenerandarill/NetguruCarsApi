@@ -6,6 +6,7 @@ urlpatterns = format_suffix_patterns([
     path('cars/find/', views.find_car),
     path('cars/rate/', views.rate_car),
     path('cars/all/', views.ListCars.as_view()),
+    path('cars/popular/', views.ListPopularCars.as_view())
 ])
 
 
