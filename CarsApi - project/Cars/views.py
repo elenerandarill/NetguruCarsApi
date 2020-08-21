@@ -28,8 +28,8 @@ def save_if_new(request, model, make):
             return
 
 
-@api_view(['POST'])
-def find_car(request):
+@api_view(['GET', 'POST'])
+def cars(request):
     """ Client can find a car giving it's make and model in request.
     Then car is checked with 'https://vpic.nhtsa.dot.gov' website,
     and if exists, is saved into our database. """
@@ -55,7 +55,13 @@ def find_car(request):
                 data = {'message': f"Car of '{make}' make and model '{model_name}' does not exist. Please, double-check it."}
                 return Response(data=data, status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
-    return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    else:
+        # method = GET
+        """ List all cars saved in database [make, model, average rate]. """
+
+        allcars = Car.objects.all().order_by('make')
+        serializer = CarSerializer(allcars, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -80,20 +86,11 @@ def rate_car(request):
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-class ListCars(APIView):
-    """ List all cars saved in database [make, model, average rate]. """
-
-    def get(self, request):
-        cars = Car.objects.all().order_by('make')
-        serializer = CarSerializer(cars, many=True)
-        return Response(serializer.data)
-
-
 class ListPopularCars(APIView):
-    """ List all cars saved in database, but from most to less poluar.
-     Polular - meaning - have the biggest amount of rates. """
+    """ List all cars saved in database, but from most to less popular.
+     Popular - meaning - have the biggest amount of rates. """
 
     def get(self, request):
-        cars = Car.objects.all().order_by('-rates_counter')
-        serializer = CarPopularSerializer(cars, many=True)
+        allcars = Car.objects.all().order_by('-rates_counter')
+        serializer = CarPopularSerializer(allcars, many=True)
         return Response(serializer.data)

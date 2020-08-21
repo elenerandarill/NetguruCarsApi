@@ -3,10 +3,10 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 urlpatterns = format_suffix_patterns([
-    path('cars/find/', views.find_car),
-    path('cars/rate/', views.rate_car),
-    path('cars/all/', views.ListCars.as_view()),
-    path('cars/popular/', views.ListPopularCars.as_view())
+    path('cars/', views.cars),
+    path('rate/', views.rate_car),
+    # path('cars/', views.ListCars.as_view()),
+    path('popular/', views.ListPopularCars.as_view())
 ])
 
 

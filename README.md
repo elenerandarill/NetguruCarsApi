@@ -15,6 +15,9 @@ User can also see **popular cars**, so a list starting with the biggest *number 
 ## Installation & Requirements
 ```
 Python 3+, Django 3+, Django Rest Framework 3+, requests 2.2+
+
+pip install -r requirements.txt
+
 ```
 Written on Windows 10
 
@@ -23,10 +26,24 @@ Written on Windows 10
 
 -----------------------------------------------
 
-### Finding/Adding a new car
+To run application locally use this in commandline inside of `NetguruCarsApi/CarsApi-project`:
 
-*Endpoint:*
-https://localhost:8000/cars/find/
+```
+python manage.py runserver
+```
+
+To run tests locally use this in commandline inside of `NetguruCarsApi/CarsApi-project`:
+
+```
+python manage.py test
+```
+
+-----------------------------------------------
+
+
+### Adding a new car
+
+*Endpoint:* `/cars/`
 
 - request method `POST`
 Client must provide the *make* of the car and *model name* of the car.
@@ -37,7 +54,7 @@ Client must provide the *make* of the car and *model name* of the car.
 ```
 
 *Possible answers*: 
-- `200` - ok - "Car of 'make' make and 'model' exists!"
+- `200` - ok - "Car of 'make' and 'model' exists!"
 - `404` - not found - "Car of 'make' and 'model' does not exist. Please, double-check it."
 - `404` - not found + error
 - `405` - method not allowed
@@ -48,8 +65,7 @@ Client must provide the *make* of the car and *model name* of the car.
 
 ### Rating a car
 
-*Endpoint:*
-https://localhost:8000/cars/rate/
+*Endpoint:* `/rate/`
 
 - request method `POST`
 Client must provide the *make* of the car, *model name* of the car and rate from **1 to 5**.
@@ -65,14 +81,14 @@ Client must provide the *make* of the car, *model name* of the car and rate from
 - `404` - not found + error
 - `405` - method not allowed
 
-*...Of course if it comes to rating Tesla the only legitimate rate is 5 ;))*
+*...Of course when it comes to rating Tesla the only legitimate rate is 5 ;))*
 
 -----------------------------------------------
 
 ### List of all registered cars
 
-*Endpoint:*
-https://localhost:8000/cars/all/
+*Endpoint:*	`/cars/`
+
 
 - request method `GET`
 List is ordered by the `make` of the car. Shows *make*, *model* and *average rate* of each car.
@@ -104,8 +120,7 @@ HTTP `200` OK
 
 ### Most popular cars
 
-*Endpoint:*
-https://localhost:8000/cars/popular/
+*Endpoint:* `/popular/`
 
 - request method `GET`
 List is ordered by the number of rates (`rates_counter`), from most to least popular.
