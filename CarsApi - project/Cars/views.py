@@ -8,7 +8,7 @@ from Cars.models import Car
 
 
 def is_model_valid(results: dict, model: str):
-    # Chcecks is model is present inside of a (r)esponse message.
+    # Chcecks if model is present inside of a (r)esponse message.
     for r in results:
         if model == r['Model_Name'].lower():
             return True
@@ -32,7 +32,8 @@ def save_if_new(request, model, make):
 def cars(request):
     """ Client can find a car giving it's make and model in request.
     Then car is checked with 'https://vpic.nhtsa.dot.gov' website,
-    and if exists, is saved into our database. """
+    and if exists, is saved into our database.
+    Example of POST body: {"make": "tesla", "model_name": "model y"} """
 
     if request.method == 'POST':
         serializer = FindCarSerializer(data=request.data)
@@ -66,7 +67,8 @@ def cars(request):
 
 @api_view(['POST'])
 def rate_car(request):
-    """ Client can rate cars, existing in database, from 1 to 5. """
+    """ Client can rate cars, existing in database, from 1 to 5.
+    Example of POST body: {"make": "tesla", "model_name": "model s", "rate": "5"} """
 
     if request.method == 'POST':
         serializer = AddRateSerializer(data=request.data)

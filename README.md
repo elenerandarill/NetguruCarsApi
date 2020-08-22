@@ -12,19 +12,52 @@ User can check out the **list of all cars**, with their current average rate, re
 User can also see **popular cars**, so a list starting with the biggest *number of rates* (not the average rate) given to the car.
 
 
+## Server:
+You can check out this application in your browser:
+```
+51.38.135.151:8000/cars/
+51.38.135.151:8000/rate/
+51.38.135.151:8000/popular/
+```
+
 ## Installation & Requirements
+
+**Important** \
+Application requires django **SECRET_KEY** inside of *settings.py* file, which should be set up 
+as `environmental variable` called **CARAPI_KEY**, so please ensure to provide it on your machine.
+
+
+App uses/requires:
 ```
 Python 3+, Django 3+, Django Rest Framework 3+, requests 2.2+
+```
 
-pip install -r requirements.txt
+
+1) #### Installation with Docker:
 
 ```
-Written on Windows 10
+docker-compose build
+docker-compose up
+```
+In the browser go to  `localhost/cars/`, `port` remains the default `80`.\
 
+
+2) #### Installation without Docker:
+
+```
+pip install -r requirements.txt
+```
+
+Application uses database sqlite file, which is created after running the app.\
+It is required to make migrations within command line:
+```
+python manage.py migrate
+```
+
+-----------------
 
 ## Usage
 
------------------------------------------------
 
 To run application locally use this in commandline inside of `NetguruCarsApi/CarsApi-project`:
 
@@ -45,7 +78,7 @@ python manage.py test
 
 *Endpoint:* `/cars/`
 
-- request method `POST`
+- request method `POST`\
 Client must provide the *make* of the car and *model name* of the car.
 
 **example**:
@@ -59,7 +92,7 @@ Client must provide the *make* of the car and *model name* of the car.
 - `404` - not found + error
 - `405` - method not allowed
 
-*If that (proper)car model is already present in database, saving it will be omitted.*
+**If that (proper)car model is already present in database, saving it will be omitted.*
 
 -----------------------------------------------
 
@@ -67,7 +100,7 @@ Client must provide the *make* of the car and *model name* of the car.
 
 *Endpoint:* `/rate/`
 
-- request method `POST`
+- request method `POST`\
 Client must provide the *make* of the car, *model name* of the car and rate from **1 to 5**.
 
 **example**:
@@ -81,7 +114,7 @@ Client must provide the *make* of the car, *model name* of the car and rate from
 - `404` - not found + error
 - `405` - method not allowed
 
-*...Of course when it comes to rating Tesla the only legitimate rate is 5 ;))*
+*...of course when it comes to rating Tesla the only legitimate rate is 5 ;))*
 
 -----------------------------------------------
 
@@ -90,12 +123,12 @@ Client must provide the *make* of the car, *model name* of the car and rate from
 *Endpoint:*	`/cars/`
 
 
-- request method `GET`
+- request method `GET`\
 List is ordered by the `make` of the car. Shows *make*, *model* and *average rate* of each car.
 
 *Possible answer*:
 ```
-HTTP `200` OK
+HTTP 200 OK
 [
     {
         "make": "honda",
@@ -122,13 +155,13 @@ HTTP `200` OK
 
 *Endpoint:* `/popular/`
 
-- request method `GET`
+- request method `GET`\
 List is ordered by the number of rates (`rates_counter`), from most to least popular.
 
 
 *Possible answers*: 
 ```
-HTTP `200` OK
+HTTP 200 OK
 [
     {
         "make": "tesla",
@@ -155,10 +188,7 @@ HTTP `200` OK
 -----------------------------------------------
 
 
-## Authors and acknowledgment
+## Authors and contact:
 paulina.wojno@gmail.com
 
-
-## Project status
-Under develop.
 

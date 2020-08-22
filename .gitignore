@@ -5,3 +5,4 @@ CarsApi - project/Cars/__pycache__/
 CarsApi - project/CarsApi/__pycache__/
 CarsApi - project/Cars/migrations/__pycache__/
 db.sqlite3
+.env
